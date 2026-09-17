@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category | CALVIER ESSENCE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        #webgl-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+        body { position: relative; background-color: #0b0b0b; color: #fff; }
+        .section-header { text-align: center; margin-bottom: 10px; }
+        .section-header span { color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
+        .section-header h2 { font-size: 2.5rem; font-family: 'Cinzel', serif; margin: 10px 0 5px 0; }
+        .section-header p { color: var(--text-muted); font-size: 0.85rem; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div id="webgl-container"></div>
+
+    <header>
+        <a href="index.html" class="logo" aria-label="Calvier Essence home"><img src="assets/calvier-essence-logo.svg" class="brand-logo-image" alt="Calvier Essence"></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="signature.html">Signature Perfumes</a></li>
+            <li><a href="collection.html">Collection</a></li>
+            <li><a href="policies.html?tab=about">About Us</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="cart.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i> Bag (<span id="cartCount">0</span>)</a>
+            <a href="policies.html?tab=contact" class="card-btn" style="padding: 8px 18px; font-size: 0.8rem; margin: 0;">Log In</a>
+        </div>
+    </header>
+
+    <section class="section-container" style="padding-top: 140px;">
+        <div class="section-header">
+            <span>Collection</span>
+            <h2 id="categoryTitle">Category</h2>
+            <p id="categoryDesc" style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">Explore this exclusive fragrance collection.</p>
+        </div>
+
+        <div class="product-grid" id="category-products-grid" style="margin-top: 40px;">
+            <p style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 40px;">Loading products...</p>
+        </div>
+    </section>
+
+<footer>
+        <p class="copyright" style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 30px;">&copy; 2026 CALVIER ESSENCE. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Quick View Modal -->
+    <div id="quickViewModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; align-items:center; justify-content:center; padding:20px;">
+        <div style="background:var(--card-bg,#141414); border:1px solid var(--border-color,rgba(212,175,55,0.2)); padding:30px; border-radius:15px; max-width:600px; width:100%; display:grid; grid-template-columns:1fr 1fr; gap:25px; position:relative;">
+            <button onclick="closeModal()" style="position:absolute; top:12px; right:16px; font-size:1.5rem; color:#fff; background:none; border:none; cursor:pointer;">&times;</button>
+            <div>
+                <img id="modalImg" src="" alt="Product" style="width:100%; border-radius:10px; object-fit:cover; max-height:300px;">
+            </div>
+            <div style="display:flex; flex-direction:column; justify-content:center;">
+                <span style="color:var(--gold); font-size:0.8rem; text-transform:uppercase; margin-bottom:5px;">CALVIER ESSENCE</span>
+                <h2 id="modalTitle" style="font-family:'Cinzel',serif; font-size:1.6rem; margin-bottom:10px; color:#fff;"></h2>
+                <p id="modalPrice" style="font-size:1.3rem; color:var(--gold); font-weight:bold; margin-bottom:12px;"></p>
+                <p id="modalDesc" style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;"></p>
+                <button id="modalAddToBag" class="card-btn" style="padding:12px; text-align:center;" onclick="addToBagFromModal()">Add to Bag</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // --- Three.js background from mens.html style ---
+        let currentModalProduct = {}; // for quick view modal
+        const container = document.getElementById('webgl-container');
+        if (container) {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+            scene.add(ambientLight);
+            const pointLight = new THREE.PointLight(0xd4af37, 3, 50);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
+            const bodyGeo = new THREE.BoxGeometry(1.2, 2.2, 0.6);
+            const bodyMat = new THREE.MeshPhysicalMaterial({ color: 0x111111, metalness: 0.8, roughness: 0.2, transmission: 0.4, transparent: true, opacity: 0.9 });
+            const bottleBody = new THREE.Mesh(bodyGeo, bodyMat);
+            scene.add(bottleBody);
+            camera.position.z = 5;
+            function animate() {
+                requestAnimationFrame(animate);
+                bottleBody.rotation.y += 0.005;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('bayt_cart')) || [];
+            let totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            let countEl = document.getElementById('cartCount');
+            if(countEl) countEl.innerText = totalCount;
+        }
+
+        function addToCartDirect(name, price, image, id, stock) {
+            let cart = JSON.parse(localStorage.getItem('bayt_cart')) || [];
+            let existingItem = cart.find(item => (id && item.id === id) || (!id && item.name === name));
+            let currentQty = existingItem ? (existingItem.quantity || 1) : 0;
+            if (stock !== undefined && stock !== null && stock >= 0) {
+                const maxStock = Number(stock);
+                if (maxStock <= 0) { alert('This product is currently out of stock!'); return; }
+                if ((currentQty + 1) > maxStock) { alert('Only ' + maxStock + ' left in stock.'); return; }
+            }
+            if (existingItem) { existingItem.quantity = (existingItem.quantity || 1) + 1; if(id) existingItem.id = id; }
+            else { cart.push({ name: name, price: price, image: image, id: id || '', quantity: 1 }); }
+            localStorage.setItem('bayt_cart', JSON.stringify(cart));
+            updateCartCount();
+        }
+
+function openModal(title, price, img, desc, stock, id) {
+            let modal = document.getElementById('quickViewModal');
+            if (!modal) {
+                // Fallback: simple alert modal
+                alert(title + ' - Rs. ' + Number(price).toLocaleString());
+                return;
+            }
+            currentModalProduct = { name: title, price: Number(price) || 0, image: img, id: id || '', stock: Number(stock) || 0 };
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalPrice').innerText = 'Rs. ' + Number(price).toLocaleString();
+            document.getElementById('modalImg').src = img;
+            document.getElementById('modalDesc').innerText = desc || 'An exquisite oriental fragrance.';
+            let addBtn = document.getElementById('modalAddToBag');
+            if (Number(stock) > 0) {
+                addBtn.innerText = 'Add to Bag';
+                addBtn.disabled = false;
+                addBtn.style.opacity = '1';
+            } else {
+                addBtn.innerText = 'Out of Stock';
+                addBtn.disabled = true;
+                addBtn.style.opacity = '0.5';
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            let modal = document.getElementById('quickViewModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function addToBagFromModal() {
+            if (currentModalProduct.name) {
+                addToCartDirect(currentModalProduct.name, currentModalProduct.price, currentModalProduct.image, currentModalProduct.id, currentModalProduct.stock);
+                closeModal();
+            }
+        }
+
+        async function loadCategoryProducts() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const category = (urlParams.get('name') || '').toUpperCase();
+                const titleEl = document.getElementById('categoryTitle');
+                titleEl.innerText = category ? category + ' Collection' : 'All Collections';
+
+                const response = await fetch('/api/products');
+                const products = await response.json();
+                const container = document.getElementById('category-products-grid');
+                if (!container) return;
+
+                container.innerHTML = '';
+                if (!Array.isArray(products) || products.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 40px;">No products available at the moment.</p>';
+                    return;
+                }
+
+                // Filter by category (if a specific one is selected)
+                const filtered = category
+                    ? products.filter(p => (p.category || '').toUpperCase() === category)
+                    : products;
+
+                if (filtered.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 40px;">No products found in this category yet.</p>';
+                    return;
+                }
+
+                if (window.generateProductCardHTML) {
+                    container.innerHTML = filtered.map(p => window.generateProductCardHTML(p)).join('');
+                    return;
+                }
+                filtered.forEach(p => {
+                    let priceVal = p.price || 0;
+                    let badgeText = p.offer || p.saleLabel || '';
+                    let offerBadge = badgeText ? '<span class="sale-badge">' + badgeText + '</span>' : '';
+                    let pStock = Number(p.stock) || 0;
+                    let stockBadge = pStock > 0 ? '<span class="stock-badge in-stock">In Stock</span>' : '<span class="stock-badge out-of-stock">Out of Stock</span>';
+                    let safeName = p.name.replace(/'/g, "\\'");
+                    let safeImg = p.image;
+                    let safeDesc = (p.description || '').replace(/'/g, "\\'");
+                    let pId = p.id || '';
+
+                    container.innerHTML += `
+                        <div class="product-card" onclick="goToProductPage('${pId}', '${safeName}')">
+                            ${offerBadge}
+                            <img src="${p.image}" alt="${p.name}">
+                            <span class="brand-name">CALVIER ESSENCE</span>
+                            <h3>${p.name}</h3>
+                            <div class="price-box"><span class="new-price" style="color: var(--gold);">Rs. ${Number(priceVal).toLocaleString()}</span></div>
+                            <p class="product-desc" style="color: #bbb; font-size: 1rem; font-weight: 600; line-height: 1.5; margin: 0 0 12px 0; min-height: 40px;">${p.description || 'Exquisite oriental fragrance crafted for the connoisseur.'}</p>
+                            ${stockBadge}
+                            <button class="card-btn" onclick="event.stopPropagation(); goToProductPage('${pId}', '${safeName}')">View Product</button>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error('Error loading products', err);
+            }
+        }
+
+document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+            loadCategoryProducts();
+        });
+    </script>
+</body>

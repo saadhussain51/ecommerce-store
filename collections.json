@@ -1,0 +1,50 @@
+[
+  {
+    "id": "coll_winter_001",
+    "name": "Winter Collection",
+    "type": "season",
+    "categories": [
+      "WINTER"
+    ],
+    "image": "https://images.unsplash.com/photo-1541643600914-78b084683601?w=800"
+  },
+  {
+    "id": "coll_summer_001",
+    "name": "Summer Collection",
+    "type": "season",
+    "categories": [
+      "SUMMER"
+    ],
+    "image": "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=800"
+  },
+  {
+    "id": "coll_gender_men",
+    "name": "Men's Collection",
+    "type": "gender",
+    "gender": "MEN",
+    "categories": [
+      "MEN"
+    ],
+    "image": "https://images.unsplash.com/photo-1547887537-6158d64c35b3?w=800"
+  },
+  {
+    "id": "coll_gender_women",
+    "name": "Women's Collection",
+    "type": "gender",
+    "gender": "WOMEN",
+    "categories": [
+      "WOMEN"
+    ],
+    "image": "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=800"
+  },
+  {
+    "id": "coll_gender_unisex",
+    "name": "Unisex Collection",
+    "type": "gender",
+    "gender": "UNISEX",
+    "categories": [
+      "UNISEX"
+    ],
+    "image": "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=800"
+  }
+]

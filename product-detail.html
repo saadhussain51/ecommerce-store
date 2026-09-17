@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Wood Intense | CALVIER ESSENCE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="logo" aria-label="Calvier Essence home"><img src="assets/calvier-essence-logo.svg" class="brand-logo-image" alt="Calvier Essence"></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="signature.html">Signature Collection</a></li>
+            <li><a href="policies.html?tab=about">About Us</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="cart.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i> Bag (<span id="cartCount">0</span>)</a>
+            <a href="policies.html?tab=contact" class="card-btn" style="padding: 8px 18px; font-size: 0.8rem; margin: 0;">Log In</a>
+        </div>
+    </header>
+
+    <!-- Product Detail Section -->
+    <main id="productDetailRoot" class="section-container" style="padding-top: 140px; min-height: 70vh;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; margin-bottom: 80px;">
+            
+            <!-- Left Column: Product Image -->
+            <div>
+                <img src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=600" alt="Royal Wood Intense" style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
+            </div>
+
+            <!-- Right Column: Product Info -->
+            <div>
+                <span class="sale-badge" style="display: inline-block; margin-bottom: 15px;">SIGNATURE</span>
+                <h1 style="font-size: 2.8rem; font-family: 'Cinzel', serif; margin-bottom: 15px; line-height: 1.2;">Royal Wood Intense EDP</h1>
+                <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 20px; line-height: 1.6;">
+                    An opulent fragrance built around rich cambodian oud wood, laced with warm spices and golden amber.
+                </p>
+                
+                <p style="font-size: 0.9rem; margin-bottom: 8px;"><strong style="color: #fff;">Brand:</strong> <span style="color: var(--text-muted);">Calvier Essence</span></p>
+                <p style="font-size: 0.9rem; margin-bottom: 25px;"><strong style="color: #fff;">Availability:</strong> <span style="color: #2ecc71;">In Stock (Limited Edition)</span></p>
+                
+                <div style="font-size: 2.2rem; font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 30px;">Rs.19,500.00</div>
+
+                <button class="card-btn" style="width: 100%; padding: 15px; font-size: 1rem; text-align: center; justify-content: center; margin-bottom: 30px;" onclick="addToCart('Royal Wood Intense', 19500, 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=600')">
+                    ADD TO BAG
+                </button>
+
+                <div style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--border-color); padding-top: 25px; color: var(--text-muted); font-size: 0.9rem;">
+                    <div><i class="fa-solid fa-truck" style="color: var(--gold); margin-right: 10px;"></i> Complimentary express shipping across Pakistan</div>
+                    <div><i class="fa-solid fa-shield-halved" style="color: var(--gold); margin-right: 10px;"></i> 100% Original Rare Ingredients Guarantee</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Related Products Section -->
+        <div style="border-top: 1px solid var(--border-color); padding-top: 60px;">
+            <h2 style="font-size: 2rem; font-family: 'Cinzel', serif; margin-bottom: 30px; text-align: center;">You May Also Like</h2>
+            
+            <div class="product-grid">
+                <!-- Related Product 1 -->
+                <div class="product-card">
+                    <span class="sale-badge">LUXURY</span>
+                    <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400" alt="Product">
+                    <span class="brand-name">CALVIER ESSENCE</span>
+                    <h3>Amber Sultan Resin</h3>
+                    <div class="price-box"><span class="new-price">Rs.22,000</span></div>
+                    <button class="card-btn" onclick="addToCart('Amber Sultan Resin', 22000, 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400')">View Details</button>
+                </div>
+
+                <!-- Related Product 2 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1547887537-6158d64c35b3?w=400" alt="Product">
+                    <span class="brand-name">CALVIER ESSENCE</span>
+                    <h3>Oud Essence Pure</h3>
+                    <div class="price-box"><span class="new-price">Rs.18,500</span></div>
+                    <button class="card-btn" onclick="addToCart('Oud Essence Pure', 18500, 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?w=400')">View Details</button>
+                </div>
+
+                <!-- Related Product 3 -->
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400" alt="Product">
+                    <span class="brand-name">CALVIER ESSENCE</span>
+                    <h3>Velvet Rose Musk</h3>
+                    <div class="price-box"><span class="new-price">Rs.16,000</span></div>
+                    <button class="card-btn" onclick="addToCart('Velvet Rose Musk', 16000, 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400')">View Details</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="margin-top: 80px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px; margin-bottom: 20px;">
+            <a href="index.html" class="logo" aria-label="Calvier Essence home"><img src="assets/calvier-essence-logo.svg" class="brand-logo-image" alt="Calvier Essence"></a>
+            <div style="display: flex; gap: 20px; font-size: 1.1rem;">
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+        <p class="copyright" style="text-align: center; color: var(--text-muted); font-size: 0.8rem;">&copy; Copyright 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const root = document.getElementById('productDetailRoot');
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id') || '';
+            const name = params.get('name') || '';
+            try {
+                const products = await fetch('/api/products').then(response => response.json());
+                const product = products.find(item => String(item.id) === id) || products.find(item => item.name === name);
+                if (!product) return;
+                const basePrice = Number(product.price || 0);
+                const sizes = Array.isArray(product.sizes)
+                    ? product.sizes.filter(size => size && size.label)
+                    : [
+                        { label: '50ml', price: Number(product.price50ml || Math.round(basePrice * 0.65)) },
+                        { label: '100ml', price: Number(product.price100ml || basePrice) }
+                    ];
+                const initialPrice = Number(sizes[0]?.price ?? basePrice);
+                const notes = product.notes || 'Fragrance notes will be added soon.';
+                const image = product.image || 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=700';
+                const stock = Number(product.stock || 0);
+                document.title = `${product.name} | CALVIER ESSENCE`;
+                let selectedPrice = initialPrice;
+                let selectedSize = sizes[0]?.label || '';
+                root.innerHTML = `
+                    <div class="detail-layout" style="display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start;">
+                        <div><img id="detailImage" src="${image}" alt="${product.name}" style="width:100%;border-radius:14px;border:1px solid var(--border-color);box-shadow:0 15px 35px rgba(0,0,0,.5);"></div>
+                        <div>
+                            <span class="sale-badge" style="display:inline-block;position:static;margin-bottom:15px;">${product.category || 'FRAGRANCE'}</span>
+                            <h1 style="font-size:2.8rem;font-family:'Cinzel',serif;margin-bottom:15px;line-height:1.2;">${product.name}</h1>
+                            <div id="detailPrice" style="font-size:2.2rem;font-family:'Cinzel',serif;color:var(--gold);margin-bottom:16px;">Rs. ${initialPrice.toLocaleString()}</div>
+                            <p style="color:var(--text-muted);line-height:1.7;margin-bottom:20px;">${product.description || 'An exquisite oriental fragrance crafted for the connoisseur.'}</p>
+                            <p style="color:${stock > 0 ? '#2ecc71' : '#e74c3c'};margin-bottom:20px;"><i class="fa-solid fa-circle-check"></i> ${stock > 0 ? `In Stock (${stock} available)` : 'Out of Stock'}</p>
+                            ${sizes.length ? `<h3 style="font-family:'Cinzel',serif;margin-bottom:10px;">Choose Size</h3><div class="size-picker" style="max-width:320px;">${sizes.map((size, index) => `<button class="size-option ${index === 0 ? 'active' : ''}" data-price="${Number(size.price || 0)}" data-size="${size.label}">${size.label} - Rs. ${Number(size.price || 0).toLocaleString()}</button>`).join('')}</div>` : ''}
+                            <h3 style="font-family:'Cinzel',serif;margin:25px 0 10px;">Fragrance Notes</h3>
+                            <p style="color:var(--text-muted);line-height:1.7;">${notes}</p>
+                            <button id="detailAdd" class="card-btn" style="width:100%;padding:15px;margin-top:25px;text-align:center;justify-content:center;" ${stock <= 0 ? 'disabled' : ''}>${stock > 0 ? 'ADD TO BAG' : 'OUT OF STOCK'}</button>
+                        </div>
+                    </div>`;
+                root.querySelectorAll('.size-option').forEach(button => button.addEventListener('click', () => {
+                    root.querySelectorAll('.size-option').forEach(option => option.classList.remove('active'));
+                    button.classList.add('active');
+                    selectedPrice = Number(button.dataset.price);
+                    selectedSize = button.dataset.size || '';
+                    root.querySelector('#detailPrice').innerText = 'Rs. ' + selectedPrice.toLocaleString();
+                }));
+                root.querySelector('#detailAdd').addEventListener('click', () => addToCart(product.name, selectedPrice, image, product.id, stock, selectedSize));
+            } catch (error) { console.error('Unable to load product details:', error); }
+        });
+    </script>
+</body>
+</html>

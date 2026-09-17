@@ -1,0 +1,55 @@
+[
+  {
+    "monthId": "1788792620708",
+    "closedDate": "2026-09-07T14:50:20.708Z",
+    "totalOrders": 1,
+    "totalRevenue": 5000,
+    "totalProfit": 1500,
+    "totalExpenses": 3500,
+    "dailyRecords": [
+      {
+        "date": "2026-09-07",
+        "totalOrders": 1,
+        "totalRevenue": 5000,
+        "totalExpenses": 3500,
+        "totalProfit": 1500,
+        "products": [
+          {
+            "name": "signature ",
+            "quantity": 1,
+            "revenue": 5000,
+            "expenses": 3500,
+            "profit": 1500
+          }
+        ]
+      }
+    ],
+    "orders": [
+      {
+        "id": "1788792508369",
+        "customerName": "saad husssain",
+        "email": "meerhussain9292@gmail.com",
+        "phone": "+920300062569222",
+        "address": "A1 Nazish heaven Gulshan e iqbal block 11, nazish heaven, Karachi, Pakistan",
+        "postalCode": "75300",
+        "country": "Pakistan",
+        "deliveryMethod": "ship",
+        "paymentMethod": "cod",
+        "items": [
+          {
+            "id": "1786048558308",
+            "name": "signature ",
+            "price": 5000,
+            "quantity": 1,
+            "image": "/uploads/prod_1786048558306.jpg"
+          }
+        ],
+        "totalAmount": 5000,
+        "expenses": 3500,
+        "profit": 1500,
+        "status": "Delivered",
+        "date": "2026-09-07T14:48:28.372Z"
+      }
+    ]
+  }
+]

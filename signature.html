@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature Collection | CALVIER ESSENCE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Three.js Library for 3D Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        /* Canvas Background Styling */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body {
+            position: relative;
+            background-color: #0b0b0b; /* Fallback background */
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Glitter & Bottle Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <header>
+        <a href="index.html" class="logo" aria-label="Calvier Essence home"><img src="assets/calvier-essence-logo.svg" class="brand-logo-image" alt="Calvier Essence"></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="signature.html" class="active">Signature Perfumes</a></li>
+            <li><a href="collection.html">Collection</a></li>
+            <li><a href="policies.html?tab=about">About Us</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="cart.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i> Bag (<span id="cartCount">0</span>)</a>
+            <a href="policies.html?tab=contact" class="card-btn" style="padding: 8px 18px; font-size: 0.8rem; margin: 0;">Log In</a>
+        </div>
+    </header>
+
+    <section class="section-container" style="padding-top: 120px;">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <span style="color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;">Exclusive Masterpieces</span>
+            <h2 style="font-size: 2.5rem; font-family: 'Cinzel', serif; margin-top: 10px;">The Signature Collection</h2>
+        </div>
+        
+        <!-- Dynamic Products Grid for Signature Category -->
+        <div class="product-grid" id="dynamic-products-grid"></div>
+    </section>
+
+    <footer>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px; margin-bottom: 20px;">
+            <a href="index.html" class="logo" aria-label="Calvier Essence home"><img src="assets/calvier-essence-logo.svg" class="brand-logo-image" alt="Calvier Essence"></a>
+            <div style="display: flex; gap: 20px; font-size: 1.1rem;">
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-pinterest-p"></i></a>
+            </div>
+            <div style="display: flex; gap: 20px; font-size: 0.85rem;">
+                <a href="policies.html?tab=privacy" style="color: var(--gold); text-decoration: none;">Privacy Policy</a>
+                <a href="policies.html?tab=about" style="color: var(--gold); text-decoration: none;">About Us</a>
+                <a href="policies.html?tab=contact" style="color: var(--gold); text-decoration: none;">Contact Us</a>
+            </div>
+        </div>
+        <p class="copyright" style="text-align: center; color: var(--text-muted); font-size: 0.8rem;">&copy; 2026 CALVIER ESSENCE. All Rights Reserved.</p>
+    </footer>
+
+<!-- Script to handle cart updating across the site & Three.js 3D Background -->
+    <script>
+        // Escape string for safe embedding in onclick attribute
+        function escAttr(s) {
+            return String(s == null ? '' : s)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/"/g, '\\"')
+                .replace(/\r?\n/g, '\\n');
+        }
+        // --- Three.js 3D Background Animation ---
+        const canvas = document.getElementById('bg-canvas');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x0b0b0b, 0.015);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 30;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xd4af37, 2, 50);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // 1. Glitter Particles
+        const particlesCount = 300;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 60;
+        }
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.3,
+            color: 0xd4af37,
+            transparent: true,
+            opacity: 0.7,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        // 2. Rotating 3D Perfume Bottle / Crystal
+        const bottleGroup = new THREE.Group();
+
+        // Bottle Body
+        const bodyGeo = new THREE.CylinderGeometry(1.5, 2, 5, 6);
+        const bodyMat = new THREE.MeshPhysicalMaterial({
+            color: 0x222222,
+            metalness: 0.2,
+            roughness: 0.1,
+            transmission: 0.9,
+            transparent: true,
+            opacity: 0.8,
+            reflectivity: 0.9
+        });
+        const bottleBody = new THREE.Mesh(bodyGeo, bodyMat);
+        bottleGroup.add(bottleBody);
+
+        // Bottle Cap (Gold)
+        const capGeo = new THREE.CylinderGeometry(0.8, 0.9, 1.5, 6);
+        const capMat = new THREE.MeshStandardMaterial({
+            color: 0xd4af37,
+            metalness: 0.9,
+            roughness: 0.2
+        });
+        const bottleCap = new THREE.Mesh(capGeo, capMat);
+        bottleCap.position.y = 3.25;
+        bottleGroup.add(bottleCap);
+
+        bottleGroup.position.set(10, -2, -5);
+        scene.add(bottleGroup);
+
+        // Mouse Parallax
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - window.innerWidth / 2) * 0.005;
+            mouseY = (event.clientY - window.innerHeight / 2) * 0.005;
+        });
+
+        // Animation Loop
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            targetX += (mouseX - targetX) * 0.05;
+            targetY += (mouseY - targetY) * 0.05;
+
+            camera.position.x = targetX * 2;
+            camera.position.y = -targetY * 2;
+            camera.lookAt(scene.position);
+
+            const elapsedTime = clock.getElapsedTime();
+            particlesMesh.rotation.y = elapsedTime * 0.05;
+
+            // Rotate bottle
+            bottleGroup.rotation.y = elapsedTime * 0.5;
+            bottleGroup.rotation.x = Math.sin(elapsedTime * 0.5) * 0.1;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Resize Listener
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+
+        // --- Cart Functions ---
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('bayt_cart')) || [];
+            let totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            let countEl = document.getElementById('cartCount');
+            if(countEl) countEl.innerText = totalCount;
+        }
+
+        function addToCart(name, price, image, id) {
+            let cart = JSON.parse(localStorage.getItem('bayt_cart')) || [];
+            let existingItem = cart.find(item => (id && item.id === id) || (!id && item.name === name));
+            if(existingItem) {
+                existingItem.quantity += 1;
+                if(id) existingItem.id = id;
+            } else {
+                cart.push({ name, price, image, id: id || '', quantity: 1 });
+            }
+            localStorage.setItem('bayt_cart', JSON.stringify(cart));
+            updateCartCount();
+        }
+
+        async function loadPageProducts() {
+            try {
+                const response = await fetch('/api/products');
+                if (!response.ok) return;
+                const products = await response.json();
+                
+                const container = document.getElementById('dynamic-products-grid');
+                if (!container) return;
+
+                container.innerHTML = '';
+                
+                // Strictly Filter by category 'SIGNATURE'
+                const signatureProducts = products.filter(p => (p.category || '').toUpperCase() === 'SIGNATURE');
+
+                if (signatureProducts.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 40px;">No signature perfumes found in this category yet.</p>';
+                    return;
+                }
+
+signatureProducts.forEach(p => {
+                    let priceVal = p.price || 20000;
+                    let descText = p.description || 'Exclusive masterpiece from Calvier Essence.';
+                    let badgeText = p.offer || p.saleLabel || '';
+                    let pStock = Number(p.stock) || 0;
+                    let offerBadge = badgeText ? `<span class="sale-badge">${badgeText}</span>` : '';
+let stockBadge = pStock > 0 ? `<span class="stock-badge in-stock">In Stock</span>` : '<span class="stock-badge out-of-stock">Out of Stock</span>';
+                    let safeName = escAttr(p.name);
+                    let safeImg = escAttr(p.image);
+                    let safeDesc = escAttr(descText);
+                    let pId = p.id || '';
+
+container.innerHTML += `
+                        <div class="product-card">
+                            ${offerBadge}
+                            <img src="${p.image}" alt="${p.name}" onclick="openModal('${safeName}', ${priceVal}, '${safeImg}', '${safeDesc}', '${pId}', ${pStock})" style="cursor:pointer;">
+                            <span class="brand-name">CALVIER ESSENCE</span>
+<h3 onclick="openModal('${safeName}', ${priceVal}, '${safeImg}', '${safeDesc}', '${pId}', ${pStock})" style="cursor:pointer;">${p.name}</h3>
+                            <div class="price-box"><span class="new-price" style="color: var(--gold);">Rs. ${Number(priceVal).toLocaleString()}</span></div>
+<p class="product-desc" style="color: #bbb; font-size: 1rem; font-weight: 600; line-height: 1.5; margin: 0 0 12px 0; min-height: 40px;">${descText}</p>
+                            ${stockBadge}
+                            <button class="card-btn" onclick="event.stopPropagation(); goToProductPage('${pId}', '${safeName}')">View Product</button>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error('Error loading products', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+            loadPageProducts();
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

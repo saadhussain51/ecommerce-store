@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop All | CALVIER ESSENCE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Three.js Library for 3D Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Product Detail Modal Styling -->
+    <style>
+        /* Canvas Background Styling */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body {
+            position: relative;
+            background-color: #0b0b0b;
+            color: #fff;
+        }
+
+        .product-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .product-modal-content {
+            background: var(--card-bg, #141414);
+            border: 1px solid var(--border-color, rgba(212,175,55,0.2));
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 700px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+        }
+        .product-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .product-modal-img {
+            width: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+            max-height: 350px;
+        }
+        @media(max-width: 600px) {
+            .product-modal-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Glitter & Bottle Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <header>
+        <a href="index.html" class="logo" aria-label="Calvier Essence home"><img src="assets/calvier-essence-logo.svg" class="brand-logo-image" alt="Calvier Essence"></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html" class="active">Shop</a></li>
+            <li><a href="signature.html">Signature Perfumes</a></li>
+            <li><a href="collection.html">Collection</a></li>
+            <li><a href="policies.html?tab=about">About Us</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="cart.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i> Bag (<span id="cartCount">0</span>)</a>
+            <a href="policies.html?tab=contact" class="card-btn" style="padding: 8px 18px; font-size: 0.8rem; margin: 0;">Log In</a>
+        </div>
+    </header>
+
+    <section class="section-container" style="padding-top: 120px;">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <span style="color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;">Complete Catalog</span>
+            <h2 style="font-size: 2.5rem; font-family: 'Cinzel', serif; margin-top: 10px;">All Luxury Fragrances</h2>
+            <div class="catalog-search" role="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="search" id="productSearch" placeholder="Search products by name, category, or notes..." aria-label="Search products">
+            </div>
+        </div>
+        
+        <!-- Dynamic Products Grid Container -->
+        <div class="product-grid" id="shop-products-grid">
+            <!-- Products will be loaded dynamically here -->
+        </div>
+    </section>
+
+    <footer>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px; margin-bottom: 20px;">
+            <a href="index.html" class="logo" aria-label="Calvier Essence home"><img src="assets/calvier-essence-logo.svg" class="brand-logo-image" alt="Calvier Essence"></a>
+            <div style="display: flex; gap: 20px; font-size: 1.1rem;">
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-pinterest-p"></i></a>
+            </div>
+            <div style="display: flex; gap: 20px; font-size: 0.85rem;">
+                <a href="policies.html?tab=privacy" style="color: var(--gold); text-decoration: none;">Privacy Policy</a>
+                <a href="policies.html?tab=about" style="color: var(--gold); text-decoration: none;">About Us</a>
+                <a href="policies.html?tab=contact" style="color: var(--gold); text-decoration: none;">Contact Us</a>
+            </div>
+        </div>
+        <p class="copyright" style="text-align: center; color: var(--text-muted); font-size: 0.8rem;">&copy; 2026 CALVIER ESSENCE. All Rights Reserved.</p>
+    </footer>
+
+<!-- Script to handle cart updating, modal popup, and Three.js 3D Background -->
+    <script>
+        // --- Three.js 3D Background Animation ---
+        const canvas = document.getElementById('bg-canvas');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x0b0b0b, 0.015);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 30;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xd4af37, 2, 50);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // 1. Glitter Particles
+        const particlesCount = 300;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 60;
+        }
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.3,
+            color: 0xd4af37,
+            transparent: true,
+            opacity: 0.7,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        // 2. Rotating 3D Perfume Bottle / Crystal
+        const bottleGroup = new THREE.Group();
+
+        const bodyGeo = new THREE.CylinderGeometry(1.5, 2, 5, 6);
+        const bodyMat = new THREE.MeshPhysicalMaterial({
+            color: 0x222222,
+            metalness: 0.2,
+            roughness: 0.1,
+            transmission: 0.9,
+            transparent: true,
+            opacity: 0.8,
+            reflectivity: 0.9
+        });
+        const bottleBody = new THREE.Mesh(bodyGeo, bodyMat);
+        bottleGroup.add(bottleBody);
+
+        const capGeo = new THREE.CylinderGeometry(0.8, 0.9, 1.5, 6);
+        const capMat = new THREE.MeshStandardMaterial({
+            color: 0xd4af37,
+            metalness: 0.9,
+            roughness: 0.2
+        });
+        const bottleCap = new THREE.Mesh(capGeo, capMat);
+        bottleCap.position.y = 3.25;
+        bottleGroup.add(bottleCap);
+
+        bottleGroup.position.set(10, -2, -5);
+        scene.add(bottleGroup);
+
+        // Mouse Parallax
+        let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0;
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - window.innerWidth / 2) * 0.005;
+            mouseY = (event.clientY - window.innerHeight / 2) * 0.005;
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            targetX += (mouseX - targetX) * 0.05;
+            targetY += (mouseY - targetY) * 0.05;
+
+            camera.position.x = targetX * 2;
+            camera.position.y = -targetY * 2;
+            camera.lookAt(scene.position);
+
+            const elapsedTime = clock.getElapsedTime();
+            particlesMesh.rotation.y = elapsedTime * 0.05;
+
+            bottleGroup.rotation.y = elapsedTime * 0.5;
+            bottleGroup.rotation.x = Math.sin(elapsedTime * 0.5) * 0.1;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- Cart & Modal Functions ---
+function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('bayt_cart')) || [];
+            let totalCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            let countEl = document.getElementById('cartCount');
+            if(countEl) countEl.innerText = totalCount;
+        }
+
+        function addToCart(name, price, image, id, stock) {
+            let cart = JSON.parse(localStorage.getItem('bayt_cart')) || [];
+            let existingItem = cart.find(item => (id && item.id === id) || (!id && item.name === name));
+            let currentQty = existingItem ? (existingItem.quantity || 1) : 0;
+            
+            // Stock validation
+            if (stock !== undefined && stock !== null && stock >= 0) {
+                const maxStock = Number(stock);
+                if (maxStock <= 0) {
+                    alert('This product is currently out of stock!');
+                    return;
+                }
+                if ((currentQty + 1) > maxStock) {
+                    alert(`Only ${maxStock} unit${maxStock > 1 ? 's' : ''} available in stock. You already have ${currentQty} in your bag.`);
+                    return;
+                }
+            }
+            
+            if(existingItem) {
+                existingItem.quantity += 1;
+                if(id) existingItem.id = id;
+            } else {
+                cart.push({ name, price, image, id: id || '', quantity: 1 });
+            }
+            localStorage.setItem('bayt_cart', JSON.stringify(cart));
+            updateCartCount();
+            alert(name + " has been added to your bag!");
+        }
+
+// --- Fetch & Load Products from Server ---
+        let shopProducts = [];
+        function renderShopProducts(products) {
+            const container = document.getElementById('shop-products-grid');
+            if (!container) return;
+            container.innerHTML = '';
+            if (!Array.isArray(products) || products.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 40px;">No matching products found.</p>';
+                return;
+            }
+            if (window.generateProductCardHTML) {
+                container.innerHTML = products.map(p => window.generateProductCardHTML(p)).join('');
+                return;
+            }
+        }
+        function filterShopProducts() {
+            const query = document.getElementById('productSearch').value.trim().toLowerCase();
+            const filtered = shopProducts.filter(product => [product.name, product.category, product.description, product.notes].join(' ').toLowerCase().includes(query));
+            renderShopProducts(filtered);
+        }
+        async function loadPageProducts() {
+            try {
+                const response = await fetch('/api/products');
+                const products = await response.json();
+                shopProducts = Array.isArray(products) ? products : [];
+
+                const container = document.getElementById('shop-products-grid');
+                if (!container) return;
+
+                if (!Array.isArray(products) || products.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 40px;">No products available at the moment.</p>';
+                    return;
+                }
+
+                if (window.generateProductCardHTML) {
+                    renderShopProducts(products);
+                    return;
+                }
+                products.forEach(p => {
+                    let priceVal = p.offerPrice || p.price || 15000;
+                    let displayPrice = p.offerPrice ? `<span class="new-price">Rs. ${Number(p.offerPrice).toLocaleString()}</span> <span style="text-decoration: line-through; color: gray; font-size: 0.85rem; margin-left: 8px;">Rs. ${Number(p.price).toLocaleString()}</span>` : `<span class="new-price">Rs. ${Number(p.price).toLocaleString()}</span>`;
+                    let badgeText = p.offer || p.saleLabel || '';
+                    let offerBadge = badgeText ? `<span class="sale-badge">${badgeText}</span>` : '';
+let pStock = Number(p.stock) || 0;
+                    let stockBadge = pStock > 0 ? `<span class="stock-badge in-stock">In Stock</span>` : '<span class="stock-badge out-of-stock">Out of Stock</span>';
+let safeName = window.escAttr(p.name);
+                    let safeImg = window.escAttr(p.image);
+                    let safeDesc = window.escAttr(p.description || 'Exquisite oriental fragrance crafted for the connoisseur.');
+                    let pId = p.id || '';
+                    
+                    container.innerHTML += `
+                        <div class="product-card" onclick="goToProductPage('${pId}', '${safeName}')" style="cursor: pointer;">
+                            ${offerBadge}
+                            <img src="${p.image}" alt="${p.name}">
+                            <span class="brand-name">CALVIER ESSENCE</span>
+                            <h3>${p.name}</h3>
+                            <div class="price-box">${displayPrice}</div>
+<p class="product-desc" style="color: #bbb; font-size: 1rem; font-weight: 600; line-height: 1.5; margin: 0 0 12px 0; min-height: 40px;">${p.description || 'Exquisite oriental fragrance crafted for the connoisseur.'}</p>
+                            ${stockBadge}
+<button class="card-btn" onclick="event.stopPropagation(); goToProductPage('${pId}', '${safeName}')">View Product</button>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error('Error loading products', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            updateCartCount();
+            const search = document.getElementById('productSearch');
+            const query = new URLSearchParams(window.location.search).get('search') || '';
+            search.value = query;
+            search.addEventListener('input', filterShopProducts);
+            await loadPageProducts();
+            if (query) filterShopProducts();
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

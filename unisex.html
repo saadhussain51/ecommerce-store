@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unisex Collection | CALVIER ESSENCE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Three.js Library for 3D Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        #webgl-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+        body {
+            position: relative;
+            background-color: #0b0b0b;
+            color: #fff;
+        }
+/* Quick View Modal Styles - Luxury Design */
+        .quick-view-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            animation: fadeInModal 0.3s ease;
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .quick-view-content {
+            background: linear-gradient(145deg, #1e1e1e 0%, #141414 100%);
+            border: 1px solid rgba(212,175,55,0.35);
+            width: 90%;
+            max-width: 820px;
+            padding: 30px;
+            position: relative;
+            border-radius: 18px;
+            display: flex;
+            gap: 35px;
+            flex-wrap: wrap;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 40px rgba(212,175,55,0.08);
+            animation: popInModal 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+        .quick-view-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 70%);
+            pointer-events: none;
+        }
+        @keyframes popInModal {
+            from { transform: scale(0.92) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .close-modal {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            color: var(--gold, #d4af37);
+            font-size: 1.6rem;
+            cursor: pointer;
+            background: rgba(212,175,55,0.1);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            z-index: 5;
+        }
+        .close-modal:hover {
+            background: var(--gold, #d4af37);
+            color: #000;
+            transform: rotate(90deg);
+        }
+        .modal-product-img {
+            border-radius: 12px;
+            border: 1px solid rgba(212,175,55,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .modal-desc-text {
+            color: var(--text-muted, #aaa);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin-bottom: 22px;
+        }
+        .product-card {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Canvas Container for Glitter & Bottle -->
+    <div id="webgl-container"></div>
+
+    <header>
+        <a href="index.html" class="logo" aria-label="Calvier Essence home"><img src="assets/calvier-essence-logo.svg" class="brand-logo-image" alt="Calvier Essence"></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="signature.html">Signature Perfumes</a></li>
+            <li><a href="collection.html">Collection</a></li>
+            <li><a href="policies.html?tab=about">About Us</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="cart.html" class="cart-btn"><i class="fa-solid fa-bag-shopping"></i> Bag (<span id="cartCount">0</span>)</a>
+            <a href="policies.html?tab=contact" class="card-btn" style="padding: 8px 18px; font-size: 0.8rem; margin: 0;">Log In</a>
+        </div>
+    </header>
+
+    <section class="section-container" style="padding-top: 140px;">
+        <div class="section-header">
+            <span>Universal Range</span>
+            <h2>Unisex Perfume Collection</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">Balanced blends of musk and amber suitable for everyone.</p>
+        </div>
+        
+        <!-- Dynamic Products Grid for Unisex Category -->
+        <div class="product-grid" id="dynamic-unisex-grid" style="margin-top: 40px;"></div>
+
+        <!-- Related Collections Section -->
+        <div style="margin-top: 80px; border-top: 1px solid var(--border-color); padding-top: 60px;">
+            <div class="section-header" style="margin-bottom: 40px;">
+                <span>Explore More</span>
+                <h2>Related Collections</h2>
+            </div>
+            <div class="product-grid">
+                <div class="product-card" onclick="location.href='mens.html'">
+                    <span class="sale-badge">MEN</span>
+                    <img src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400" alt="Men Collection">
+                    <span class="brand-name">CALVIER ESSENCE</span>
+                    <h3>Men's Range</h3>
+                    <div class="price-box"><span class="new-price" style="color: var(--text-muted); font-size: 0.9rem;">Powerful & Bold</span></div>
+                    <a href="mens.html" class="card-btn">View Collection</a>
+                </div>
+                <div class="product-card" onclick="location.href='womens.html'">
+                    <span class="sale-badge">WOMEN</span>
+                    <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400" alt="Women Collection">
+                    <span class="brand-name">CALVIER ESSENCE</span>
+                    <h3>Women's Range</h3>
+                    <div class="price-box"><span class="new-price" style="color: var(--text-muted); font-size: 0.9rem;">Floral & Elegant</span></div>
+                    <a href="womens.html" class="card-btn">View Collection</a>
+                </div>
+                <div class="product-card" onclick="location.href='collection.html'">
+                    <span class="sale-badge">ALL</span>
+                    <img src="https://images.unsplash.com/photo-1615397349754-cfa2066a298e?w=400" alt="All Collections">
+                    <span class="brand-name">CALVIER ESSENCE</span>
+                    <h3>All Collections</h3>
+                    <div class="price-box"><span class="new-price" style="color: var(--text-muted); font-size: 0.9rem;">Explore Everything</span></div>
+                    <a href="collection.html" class="card-btn">View All</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popup Modal Structure - Luxury Design -->
+    <div id="quickViewModal" class="quick-view-modal">
+        <div class="quick-view-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div style="flex: 1; min-width: 280px;">
+                <img id="modalImg" src="" alt="Product" class="modal-product-img" style="width: 100%; object-fit: cover; max-height: 350px;">
+            </div>
+            <div style="flex: 1; min-width: 280px; display: flex; flex-direction: column; justify-content: center;">
+                <span style="color: var(--gold); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">✦ Calvier Essence ✦</span>
+                <h2 id="modalTitle" style="font-family: 'Cinzel', serif; font-size: 2rem; color: #fff; margin: 5px 0 8px 0; line-height: 1.2;"></h2>
+                <div id="modalPrice" style="color: var(--gold); font-size: 1.6rem; font-weight: 700; margin-bottom: 12px;"></div>
+                <div id="modalStock" style="font-size: 0.8rem; margin-bottom: 14px;"></div>
+                <p id="modalDesc" class="modal-desc-text"></p>
+                <button id="modalAddToBag" class="card-btn" style="text-align: center; width: 100%; padding: 14px; font-weight: 600; letter-spacing: 1px; border-radius: 8px; background: linear-gradient(135deg, var(--gold, #d4af37), #aa8537); color: #0b0b0b; border: none; cursor: pointer; transition: 0.3s;" onclick="addToBagFromModal()">Add to Bag</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; border-bottom: 1px solid var(--border-color); padding: 0 50px 30px 50px; margin-bottom: 20px;">
+            <a href="index.html" class="logo" aria-label="Calvier Essence home"><img src="assets/calvier-essence-logo.svg" class="brand-logo-image" alt="Calvier Essence"></a>
+            <div style="display: flex; gap: 20px; font-size: 1.1rem;">
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-pinterest-p"></i></a>
+            </div>
+            <div style="display: flex; gap: 20px; font-size: 0.85rem;">
+                <a href="policies.html?tab=privacy" style="color: var(--gold); text-decoration: none;">Privacy Policy</a>
+                <a href="policies.html?tab=about" style="color: var(--gold); text-decoration: none;">About Us</a>
+                <a href="policies.html?tab=contact" style="color: var(--gold); text-decoration: none;">Contact Us</a>
+            </div>
+        </div>
+        <p class="copyright" style="text-align: center; color: var(--text-muted); font-size: 0.8rem;">&copy; 2026 CALVIER ESSENCE. All Rights Reserved.</p>
+    </footer>
+
+<!-- Scripts & Cart Logic -->
+    <script>
+        // Escape string for safe embedding in onclick attribute
+        function escAttr(s) {
+            return String(s == null ? '' : s)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/"/g, '\\"')
+                .replace(/\r?\n/g, '\\n');
+        }
+        // --- Fetch & Filter Unisex Products from API ---
+        async function loadPageProducts() {
+            try {
+                const response = await fetch('/api/products');
+                if (!response.ok) return;
+                const products = await response.json();
+
+                const container = document.getElementById('dynamic-unisex-grid');
+                if (!container) return;
+
+                container.innerHTML = '';
+
+                // Strictly Filter by category 'UNISEX'
+                const unisexProducts = products.filter(p => (p.category || '').toUpperCase() === 'UNISEX');
+
+                if (unisexProducts.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 40px;">No unisex perfumes found in this category yet.</p>';
+                    return;
+                }
+
+unisexProducts.forEach(p => {
+                    let priceVal = p.price || 15000;
+                    let descText = p.description || 'A balanced blend suitable for everyone.';
+                    let badgeText = p.offer || p.saleLabel || '';
+                    let pStock = Number(p.stock) || 0;
+                    let offerBadge = badgeText ? `<span class="sale-badge">${badgeText}</span>` : '';
+let stockBadge = pStock > 0 ? `<span class="stock-badge in-stock">In Stock</span>` : '<span class="stock-badge out-of-stock">Out of Stock</span>';
+
+// Escape strings safely for inline function call
+                    let safeName = escAttr(p.name);
+                    let safeDesc = escAttr(descText);
+                    let safeImg = escAttr(p.image);
+                    let pId = p.id || '';
+
+                    container.innerHTML += `
+<div class="product-card" onclick="goToProductPage('${pId}', '${safeName}')">
+                            ${offerBadge}
+                            <img src="${p.image}" alt="${p.name}">
+                            <span class="brand-name">CALVIER ESSENCE</span>
+<h3>${p.name}</h3>
+                            <div class="price-box"><span class="new-price" style="color: var(--gold);">Rs. ${Number(priceVal).toLocaleString()}</span></div>
+<p class="product-desc" style="color: #bbb; font-size: 1rem; font-weight: 600; line-height: 1.5; margin: 0 0 12px 0; min-height: 40px;">${descText}</p>
+                            ${stockBadge}
+<button class="card-btn" onclick="event.stopPropagation(); goToProductPage('${pId}', '${safeName}')">View Product</button>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error('Error loading products', err);
+            }
+        }
+
+        // --- Glitter Background & 3D Bottle Animation ---
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+            loadPageProducts();
+
+            const container = document.getElementById('webgl-container');
+            if (container && typeof THREE !== 'undefined') {
+                const scene = new THREE.Scene();
+                scene.fog = new THREE.FogExp2(0x0b0b0b, 0.015);
+
+                const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+                camera.position.z = 30;
+
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                container.appendChild(renderer.domElement);
+
+                // Lighting
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+                scene.add(ambientLight);
+
+                const pointLight = new THREE.PointLight(0xd4af37, 2, 50);
+                pointLight.position.set(10, 10, 10);
+                scene.add(pointLight);
+
+                // Glitter Particles
+                const particlesCount = 300;
+                const posArray = new Float32Array(particlesCount * 3);
+                for(let i = 0; i < particlesCount * 3; i++) {
+                    posArray[i] = (Math.random() - 0.5) * 60;
+                }
+
+                const particlesGeometry = new THREE.BufferGeometry();
+                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+                const particlesMaterial = new THREE.PointsMaterial({
+                    size: 0.3,
+                    color: 0xd4af37,
+                    transparent: true,
+                    opacity: 0.7,
+                    blending: THREE.AdditiveBlending
+                });
+
+                const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+                scene.add(particlesMesh);
+
+                // Rotating 3D Perfume Bottle
+                const bottleGroup = new THREE.Group();
+
+                const bodyGeo = new THREE.CylinderGeometry(1.5, 2, 5, 6);
+                const bodyMat = new THREE.MeshPhysicalMaterial({
+                    color: 0x222222,
+                    metalness: 0.2,
+                    roughness: 0.1,
+                    transmission: 0.9,
+                    transparent: true,
+                    opacity: 0.8,
+                    reflectivity: 0.9
+                });
+                const bottleBody = new THREE.Mesh(bodyGeo, bodyMat);
+                bottleGroup.add(bottleBody);
+
+                const capGeo = new THREE.CylinderGeometry(0.8, 0.9, 1.5, 6);
+                const capMat = new THREE.MeshStandardMaterial({
+                    color: 0xd4af37,
+                    metalness: 0.9,
+                    roughness: 0.2
+                });
+                const bottleCap = new THREE.Mesh(capGeo, capMat);
+                bottleCap.position.y = 3.25;
+                bottleGroup.add(bottleCap);
+
+                bottleGroup.position.set(10, -2, -5);
+                scene.add(bottleGroup);
+
+                let mouseX = 0;
+                let mouseY = 0;
+                let targetX = 0;
+                let targetY = 0;
+
+                document.addEventListener('mousemove', (event) => {
+                    mouseX = (event.clientX - window.innerWidth / 2) * 0.005;
+                    mouseY = (event.clientY - window.innerHeight / 2) * 0.005;
+                });
+
+                const clock = new THREE.Clock();
+
+                function animate() {
+                    requestAnimationFrame(animate);
+
+                    targetX += (mouseX - targetX) * 0.05;
+                    targetY += (mouseY - targetY) * 0.05;
+
+                    camera.position.x = targetX * 2;
+                    camera.position.y = -targetY * 2;
+                    camera.lookAt(scene.position);
+
+                    const elapsedTime = clock.getElapsedTime();
+                    particlesMesh.rotation.y = elapsedTime * 0.05;
+
+                    bottleGroup.rotation.y = elapsedTime * 0.5;
+                    bottleGroup.rotation.x = Math.sin(elapsedTime * 0.5) * 0.1;
+
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                window.addEventListener('resize', () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

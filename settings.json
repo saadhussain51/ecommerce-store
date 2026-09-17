@@ -1,0 +1,28 @@
+{
+  "homepage": {
+    "heroTitle": "",
+    "heroSubtitle": "",
+    "heroOffer": "",
+    "sec1Title": "",
+    "sec1Desc": "",
+    "sec2Title": "",
+    "sec2Desc": "",
+    "traditionTitle": "",
+    "traditionDesc": "",
+    "box1Title": "",
+    "box1Desc": "",
+    "box2Title": "",
+    "box2Desc": "",
+    "subTitle": "",
+    "subDesc": ""
+  },
+  "general": {
+    "social": {
+      "facebook": "",
+      "instagram": "https://www.instagram.com/saadhussain51/",
+      "twitter": "",
+      "youtube": "",
+      "pinterest": ""
+    }
+  }
+}

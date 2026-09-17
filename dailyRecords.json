@@ -1,0 +1,18 @@
+[
+  {
+    "date": "2026-09-07",
+    "totalOrders": 1,
+    "totalRevenue": 5000,
+    "totalExpenses": 3500,
+    "totalProfit": 1500,
+    "products": [
+      {
+        "name": "signature ",
+        "quantity": 1,
+        "revenue": 5000,
+        "expenses": 3500,
+        "profit": 1500
+      }
+    ]
+  }
+]
